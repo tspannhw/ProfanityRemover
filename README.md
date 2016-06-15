@@ -21,27 +21,53 @@ To Build an Eclipse Project
 mvn eclipse:eclipse
 
 To Build
+	./build.sh
 
-mvn package
+To Build for Command-Line Usage (outside of Hive)
+	./buildfirst.sh
+(or)
+	mvn clean compile assembly:single
 
 generates
-target/deprofaner-1.0.jar
+	target/deprofaner-1.0-jar-with-dependencies.jar
+
+Copy deprofaner*jar to directory to run from or /usr/hdp/current/hive-client/lib/
+
+mkdir -p /opt/demo/udf
+Copy src/main/resources/terms.txt to /opt/demo/udf/terms.txt
 
 In Hive
 
-hive> add jar deprofaner-1.0.jar;
+hive> set hive.cli.print.header=true;
+hive> add jar deprofaner-1.0-jar-with-dependencies.jar;
+Added [deprofaner-1.0-jar-with-dependencies.jar] to class path
+Added resources: [deprofaner-1.0-jar-with-dependencies.jar]
+hive> CREATE TEMPORARY FUNCTION cleaner as 'com.dataflowdeveloper.deprofaner.ProfanityRemover';
+OK
+select cleaner('clean this <curseword> up now') from sample_07 limit 1;
+OK
+_c0
+clean this **** up now
+Time taken: 6.279 seconds, Fetched: 1 row(s)
 
-create temporary function sanitize as 'com.dataflowdeveloper.deprofaner.ProfanityRemover';
 
-In New Hive
-
-create function default.sanitize as 'com.dataflowdeveloper.deprofaner.ProfanityRemover';
+Check logs
+/var/log/hive/hiveserver2.log
 
 
+set hive.cli.print.header=true;
+add jar deprofaner-1.0-jar-with-dependencies.jar;
+CREATE TEMPORARY FUNCTION cleaner as 'com.dataflowdeveloper.deprofaner.ProfanityRemover';
+select cleaner(description) from sample_07 limit 100;
 
-Test In Hive
+For Permanent UDF
 
-select sanitize(title) from sample_07;
+-- For Permanent
+-- https://cwiki.apache.org/confluence/display/Hive/HivePlugins
 
-/usr/hdp/current/hive-client/lib/
+Run scripts/install.sh
+
+set hive.cli.print.header=true;
+CREATE FUNCTION cleaner as 'com.dataflowdeveloper.deprofaner.ProfanityRemover' USING JAR 'hdfs:///udf/deprofaner-1.0-jar-with-dependencies.jar';
+
 

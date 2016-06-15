@@ -1,0 +1,7 @@
+set hive.cli.print.header=true;
+add jar deprofaner-1.0-jar-with-dependencies.jar;
+CREATE TEMPORARY FUNCTION cleaner as 'com.dataflowdeveloper.deprofaner.ProfanityRemover';
+select cleaner(description) from sample_07 limit 100;
+
+set hive.cli.print.header=true;
+CREATE FUNCTION cleaner as 'com.dataflowdeveloper.deprofaner.ProfanityRemover' USING JAR 'hdfs:///udf/deprofaner-1.0-jar-with-dependencies.jar';

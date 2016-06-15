@@ -3,12 +3,12 @@
  */
 package deprofaner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.apache.hadoop.io.Text;
 import org.junit.Test;
 
 import com.dataflowdeveloper.deprofaner.ProfanityRemover;
-import org.apache.hadoop.io.Text;
 
 /**
  * @author tspann
@@ -16,30 +16,6 @@ import org.apache.hadoop.io.Text;
  *
  */
 public class ProfanityRemoverTest {
-
-	/** test string **/
-	
-	private static final String profaneText = "Ass is a kind of donkey";
-	
-	/**
-	 * Test method for {@link com.dataflowdeveloper.deprofaner.ProfanityRemover#fillWithCharacter(int, java.lang.String)}.
-	 */
-	@Test
-	public void testFillWithCharacterIntString() {
-		ProfanityRemover remover = new ProfanityRemover();
-		
-		assertEquals("XXXXX", remover.fillWithCharacter(5, "X") );				
-	}
-
-	/**
-	 * Test method for {@link com.dataflowdeveloper.deprofaner.ProfanityRemover#filterOutProfanity(java.lang.String)}.
-	 */
-	@Test
-	public void testFilterOutProfanity() {
-		ProfanityRemover remover = new ProfanityRemover();
-		assertEquals("*** is a kind of donkey", 
-				remover.filterOutProfanity(profaneText));
-	}
 
 	/**
 	 * Test method for {@link com.dataflowdeveloper.deprofaner.ProfanityRemover#evaluate(org.apache.hadoop.io.Text)}.
