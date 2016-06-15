@@ -1,7 +1,7 @@
 /**
  * 
  */
-package deprofaner;
+package com.dataflowdeveloper.deprofaner;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.dataflowdeveloper.deprofaner.Util;
 
 /**
- * @author tspann
+ * @author tspann   
  *
  */
 public class UtilTest {

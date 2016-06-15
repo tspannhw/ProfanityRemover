@@ -17,6 +17,10 @@ import com.google.common.base.Strings;
  * utility
  * 
  * @author tspann
+ * 
+ * we really need some complex NLP here, since some word fragments that are profanities are not in other words.
+ * 
+ * This API is decent but not free https://www.webpurify.com/documentation/methods/replace/
  *
  */
 public final class Util {
@@ -100,16 +104,30 @@ public final class Util {
 
 			List<String> lines = FileUtils.readLines(termFile, "UTF-8");
 
+			// so ugly, but good enough for example
+			// @Todo   Refactor me
 			for (String line : lines) {
 				if (!Strings.isNullOrEmpty(line)) {
-					profanities.add(line.trim());
-					replacements.add(fillWithCharacter(line.length()));
-					profanities.add(line.trim().toLowerCase());
-					replacements.add(fillWithCharacter(line.length()));
-					profanities.add(line.trim().toUpperCase());
-					replacements.add(fillWithCharacter(line.length()));
+					String originalLine = line;
+					line = originalLine + " "; // only want words not fragments
+					profanities.add(line);
+					replacements.add(fillWithCharacter(originalLine.length()) );
+					profanities.add(line.toLowerCase());
+					replacements.add(fillWithCharacter(originalLine.length()) );
+					profanities.add(line.toUpperCase());
+					replacements.add(fillWithCharacter(originalLine.length()) );
 					profanities.add(StringUtils.capitalize(line.trim()));
-					replacements.add(fillWithCharacter(line.length()));
+					replacements.add(fillWithCharacter(originalLine.length()) );
+					
+					line = " " + originalLine; // only want words not fragments
+					profanities.add(line);
+					replacements.add(" " + fillWithCharacter(originalLine.length()));
+					profanities.add(line.toLowerCase());
+					replacements.add(" " + fillWithCharacter(originalLine.length()));
+					profanities.add(line.toUpperCase());
+					replacements.add(" " + fillWithCharacter(originalLine.length()));
+					profanities.add(StringUtils.capitalize(line.trim()));
+					replacements.add(" " + fillWithCharacter(originalLine.length()));
 				}
 			}
 

@@ -3,6 +3,8 @@ Hive Java UDF for ProfanityRemover (Example Code)
 
 Warning!  src/main/resources and src/test/resources contain a list of offensive words.
 
+This is an example of a Hive UDF, it will filter many profanities, but will also block out a lot of false positives.
+
 
 Building a Hive UDF
 
@@ -53,7 +55,6 @@ Time taken: 6.279 seconds, Fetched: 1 row(s)
 
 Check logs
 /var/log/hive/hiveserver2.log
-
 
 set hive.cli.print.header=true;
 add jar deprofaner-1.0-jar-with-dependencies.jar;
